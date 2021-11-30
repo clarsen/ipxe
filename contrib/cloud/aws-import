@@ -121,13 +121,17 @@ with ThreadPoolExecutor(max_workers=len(imports)) as executor:
                for future in as_completed(futures)}
 
 # Construct Dokuwiki table
-wikitab = ["^ AWS region  ^ CPU architecture  ^ AMI ID  ^\n"] + list(
-    "| ''%s''  | ''%s''  | ''[[%s|%s]]''  |\n" % (
+wikitab = ["^ AWS region  ^ CPU architecture  ^ AMI ID  ^\n"] + [
+    "| ''%s''  | ''%s''  | ''[[%s|%s]]''  |\n"
+    % (
         region,
         architectures[image],
         launch_link(region, results[(region, image)]),
         results[(region, image)],
-    ) for region, image in imports)
+    )
+    for region, image in imports
+]
+
 if args.wiki:
     with open(args.wiki, 'wt') as fh:
         fh.writelines(wikitab)
